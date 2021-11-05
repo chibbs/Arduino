@@ -64,13 +64,11 @@ enum Mp3VoiceCommand : byte {
   Mp3Com_Start           = 0x00,
   Mp3Com_KnownCard       = 0x01,
   Mp3Com_UnknownCard     = 0x02,
-  // bing am start, "Diese Karte ist unbekannt" oder möööp, anderes bing für erkannte Karte
 };
 
 class Mp3Player: public DFMiniMp3<SoftwareSerial, Mp3Notify> {
   private:
   SoftwareSerial mySoftwareSerial;
-  //uint16_t lastTrackFinished;
 
   public:
   uint16_t numTracksInFolder;
