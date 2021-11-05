@@ -1,8 +1,18 @@
 # Speaking Halloween Pumpkin With Arduino
 This was a little fun project for Halloween. We used a real pumpkin, of course. But we added a small Arduino setup that enabled the pumpkin to talk and glow whenever somebody approached. Got hilarious reactions!
 
+## Features
+* motion-triggered (courtesy of PIR sensor)
+* LED illumination with changing rainbow colors
+* talks and makes scary noises (a randomly selected sound file is played - let the kids have fun recording their own!)
+
+Here is our pumpkin (it looked more impressive in the dark, of course!). The white dot in the lower part is the PIR sensor.
+
+![Our pumpkin](info/image3.jpg)
+
 ## Components
 Here is what I used...
+
 * Arduino Nano
 * 12 NeoPixel Ring
 * DFRobot DFPlayer Mini
@@ -29,13 +39,9 @@ For this project the sound files must be placed in a folder named 'mp3' or 'MP3'
 You can copy the mp3 folder included in this repository and add custom sound files to it.
 
 ## Code
-You can find the Arduino code in the folder 'code'. It consists of the sketch proper and two libraries I wrote. Be sure to download all three!
+You can find the Arduino code in the folder 'code'. It consists of the sketch proper and two custom libraries. Be sure to download all three!
 
 You also need to install two libraries in your Arduino IDE:
 * Adafruit Neopixel (I use the current version 1.10.0)
 * DFPlayer Mini Mp3 by Makuna (**must be version 1.0.5!**)
 
-## Images
-Here is our pumpkin (it looked more impressive in the dark, of course!). The white dot in the lower part is the PIR sensor.
-
-![Our pumpkin](info/image3.jpg)
