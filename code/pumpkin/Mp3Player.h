@@ -1,8 +1,10 @@
 #ifndef __MP3PLAYER__
 #define __MP3PLAYER__
 
+/* https://github.com/Makuna/DFMiniMp3/wiki/API-Reference */
+
 #include <Arduino.h>
-#include <DFMiniMp3.h>  // (by Makuna) Must be Version 1.0.5!!!
+#include <DFMiniMp3.h>
 #include <SoftwareSerial.h>
 
 // implement a notification class,
@@ -17,53 +19,28 @@ public:
     Serial.println(errorCode);
   }
 
-  static void OnPlayFinished(uint16_t globalTrack) {
+  static void OnPlayFinished(DfMp3_PlaySources source, uint16_t track) {
     Serial.println();
     Serial.print("Play finished for #");
-    Serial.println(globalTrack);   
+    Serial.println(track);   
   }
 
-  static void OnCardOnline(uint16_t code) {
-    Serial.println();
-    Serial.print("Card online ");
-    Serial.println(code);     
+  static void PrintlnSourceAction(DfMp3_PlaySources source, const char* action) {
+    if (source & DfMp3_PlaySources_Sd) Serial.print("SD Karte ");
+    if (source & DfMp3_PlaySources_Usb) Serial.print("USB ");
+    if (source & DfMp3_PlaySources_Flash) Serial.print("Flash ");
+    Serial.println(action);
   }
 
-  static void OnUsbOnline(uint16_t code) {
-    Serial.println();
-    Serial.print("USB Disk online ");
-    Serial.println(code);     
+  static void OnPlaySourceOnline(DfMp3_PlaySources source) {
+    PrintlnSourceAction(source, "online");
   }
-
-  static void OnCardInserted(uint16_t code) {
-    Serial.println();
-    Serial.print("Card inserted ");
-    Serial.println(code); 
+  static void OnPlaySourceInserted(DfMp3_PlaySources source) {
+    PrintlnSourceAction(source, "bereit");
   }
-
-  static void OnUsbInserted(uint16_t code) {
-    Serial.println();
-    Serial.print("USB Disk inserted ");
-    Serial.println(code); 
+  static void OnPlaySourceRemoved(DfMp3_PlaySources source) {
+    PrintlnSourceAction(source, "entfernt");
   }
-
-  static void OnCardRemoved(uint16_t code) {
-    Serial.println();
-    Serial.print("Card removed ");
-    Serial.println(code);  
-  }
-
-  static void OnUsbRemoved(uint16_t code) {
-    Serial.println();
-    Serial.print("USB Disk removed ");
-    Serial.println(code);  
-  }
-};
-
-enum Mp3VoiceCommand : byte {
-  Mp3Com_Start           = 0x00,
-  Mp3Com_KnownCard       = 0x01,
-  Mp3Com_UnknownCard     = 0x02,
 };
 
 class Mp3Player: public DFMiniMp3<SoftwareSerial, Mp3Notify> {
@@ -74,6 +51,7 @@ class Mp3Player: public DFMiniMp3<SoftwareSerial, Mp3Notify> {
   uint16_t numTracksInFolder;
   uint8_t currentTrack;
   uint8_t currentFolder;
+  long randNumber;
   byte busyPin;
   Mp3Player(byte rx, byte tx, byte busy) :  busyPin(busy), mySoftwareSerial(rx, tx), DFMiniMp3<SoftwareSerial, Mp3Notify>(mySoftwareSerial)
   {}
@@ -83,18 +61,10 @@ class Mp3Player: public DFMiniMp3<SoftwareSerial, Mp3Notify> {
     DFMiniMp3::begin(); // caution: uses 9600 for software serial connection
     reset();
     setVolume(40);
-    
-    uint16_t count = getTotalTrackCount();
-    Serial.print("files ");
-    Serial.println(count);
 
-    uint16_t mode = getPlaybackMode();
-    Serial.print("playback mode ");
-    Serial.println(mode);
-  }
-
-  void playCommandSound(Mp3VoiceCommand com) {
-    playMp3FolderTrack(com);
+    // Uses the unconnected input pin 0 to generate different seed numbers.
+    // randomSeed() calls the random()function.
+    randomSeed(analogRead(0));
   }
 
   void setFolder(uint8_t folder) {
@@ -109,14 +79,21 @@ class Mp3Player: public DFMiniMp3<SoftwareSerial, Mp3Notify> {
   }
 
   void play() {
-    playFolderTrack(currentFolder, currentTrack);
+    Serial.print("   play "); Serial.println(currentTrack);
+    playFolderTrack16(currentFolder, currentTrack);
   }
 
-  /*bool isPlaying() { 
+  void playRandom() {
+    randNumber = random(numTracksInFolder) + 1;
+    uint16_t currentTrack = randNumber;
+    play();
+  }
+
+  bool isPlaying() { 
     return !digitalRead(busyPin); 
   }
 
-  // override
+  /*// override
   void loop() {
     DFMiniMp3::loop();
     //Serial.println("Extra!");

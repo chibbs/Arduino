@@ -34,7 +34,7 @@ This is the same setup you can see in the photo above (the one with the red PCB 
 ## TF card
 The sounds are stored on a mini SD TF card. The DFPlayer Mini is rather fickle. If you get com errors it might be caused by the TF card (read the documentations!).
 
-For this project the sound files must be placed in a folder named 'mp3' or 'MP3' (case does not matter). I would also name the files '0001.mp3', '0002.mp3' etc. Not sure if that matters, though. The sketch reads the number of files present in that folder and plays them in a random order.
+For this project the sound files must be placed in folder '01', which must be inside another one named 'mp3' or 'MP3' (case does not matter). The files' names must start with a 4-digit number, e.g. '0001.mp3' or '0002_roar.mp3', and the numbering must be continuous, starting with 0001. The sketch reads the number of files present in that folder and plays them in a random order.
 
 You can copy the mp3 folder included in this repository and add custom sound files to it.
 
@@ -42,6 +42,5 @@ You can copy the mp3 folder included in this repository and add custom sound fil
 You can find the Arduino code in the folder 'code'. It consists of the sketch proper and two custom libraries. Be sure to download all three!
 
 You also need to install two libraries in your Arduino IDE:
-* Adafruit Neopixel (I use the current version 1.10.0)
-* DFPlayer Mini Mp3 by Makuna (**must be version 1.0.5!**)
-
+* Adafruit Neopixel (I use the current version 1.10.1)
+* DFPlayer Mini Mp3 by Makuna (current version is 1.0.7)
