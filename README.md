@@ -1,4 +1,4 @@
-# Speaking Halloween Pumpkin With Arduino
+# Talking Halloween Pumpkin With Arduino
 This was a little fun project for Halloween. We used a real pumpkin, of course. But we added a small Arduino setup that enabled the pumpkin to talk and glow whenever somebody approached. Got hilarious reactions!
 
 ## Features
