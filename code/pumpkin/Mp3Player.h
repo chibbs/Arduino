@@ -16,7 +16,64 @@ public:
     // see DfMp3_Error for code meaning
     Serial.println();
     Serial.print("Com Error ");
-    Serial.println(errorCode);
+    Serial.print(errorCode);
+    Serial.print(": ");
+    
+    switch (errorCode) {
+      case DfMp3_Error_Busy: {
+          Serial.print(F("1- player busy"));      // Es läuft eine Wiedergabe
+          break;
+        }
+      case DfMp3_Error_Sleeping: {
+          Serial.print(F("2- sleep"));             // Df Player im Sleepmodus
+          break;
+        }
+      case DfMp3_Error_SerialWrongStack: {
+          Serial.print(F("3- memory"));               // Fehler interer Speicher
+          break;
+        }
+      case DfMp3_Error_CheckSumNotMatch: {
+          Serial.print(F("4- hardware communication")); // Hardware Kommunikationsfehler
+          break;
+        }
+      case DfMp3_Error_FileIndexOut: {
+          Serial.print(F("5- file index out of bounds"));   // Dateinummer außerhalb des Bereiches
+          break;
+        }
+      case DfMp3_Error_FileMismatch: {
+          Serial.print(F("6- file not found"));    // Datei nicht gefunden
+          break;
+        }
+      case DfMp3_Error_Advertise: {
+          Serial.print(F("7- advert"));            // Fehler beim Abspielen Advert
+          break;
+        }
+      case DfMp3_Error_RxTimeout: {
+          Serial.print(F("rx timeout"));           // Zeitüberschreitung RX-Signal
+          break;
+        }
+      case DfMp3_Error_PacketSize: {
+          Serial.print(F("packet size"));          // Fehler Sektorgröße
+          break;
+        }
+      case DfMp3_Error_PacketHeader: {
+          Serial.print(F("packet header"));        // Fehler Header
+          break;
+        }
+      case DfMp3_Error_PacketChecksum: {
+          Serial.print(F("packet checksum"));      // Prüfsummenfehler
+          break;
+        }
+      case DfMp3_Error_General: {
+          Serial.print(F("general"));              // allgemeiner Fehler
+          break;
+        }
+      default: {
+          Serial.print(F("unknown"));              // unbekannter Fehler
+          break;
+        }
+    }
+    Serial.println(F(" error"));
   }
 
   static void OnPlayFinished(DfMp3_PlaySources source, uint16_t track) {
